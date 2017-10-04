@@ -40,5 +40,6 @@ package() {
   ##FIXME: Nasty workaround because we need an old version of libsasl2.so
   ar x libsasl2-2_2.1.27~101-g0780600+dfsg-3ubuntu1_amd64.deb
   tar xfJ data.tar.xz
-  cp usr/lib/x86_64-linux-gnu/* "${pkgdir}/usr/lib/"
+  cp usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25 "${pkgdir}/usr/lib/libsasl2.so.2.0.25"
+  ln -s "/usr/lib/libsasl2.so.2.0.25" "${pkgdir}/usr/lib/libsasl2.so.2"
 }
