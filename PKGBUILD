@@ -1,17 +1,19 @@
 # Maintainer: Conor Anderson <conor@conr.ca>
 pkgname=mailspring-bin
 _pkgname=${pkgname%-bin}
-pkgver=1.0.1
+pkgver=1.0.2
+pkgvercommit="4eab3f85"
 pkgrel=1
 pkgdesc="The best email app for people and teams at work"
 url='http://getmailspring.com/'
 arch=('x86_64')
 license=('GPL3')
-depends=('alsa-lib' 'gconf' 'gtk2' 'libgnome-keyring' 'libxss' 'libxkbfile' 'libxtst' 'nss' 'pcre' 'python')
-source=("${_pkgname}-${pkgver}-amd64.deb::https://mailspring-builds.s3.amazonaws.com/client/ba1d6734/linux/${_pkgname}-${pkgver}-amd64.deb"
+depends=('alsa-lib' 'gconf' 'gtk2' 'gnome-keyring' 'libgnome-keyring' 'libxss' 'libxkbfile' 'libxtst' 'nss' 'pcre' 'python')
+# https://mailspring-builds.s3.amazonaws.com/client/4eab3f85/linux/mailspring-1.0.2-amd64.deb
+source=("${_pkgname}-${pkgver}-amd64.deb::https://mailspring-builds.s3.amazonaws.com/client/${pkgvercommit}/linux/${_pkgname}-${pkgver}-amd64.deb"
         "http://mirrors.kernel.org/ubuntu/pool/main/c/cyrus-sasl2/libsasl2-2_2.1.27~101-g0780600+dfsg-3ubuntu1_amd64.deb")
 noextract=('libsasl2-2_2.1.27~101-g0780600+dfsg-3ubuntu1_amd64.deb')
-sha256sums=('3d1796268d6169d24427f00dce229305943d516bbe060dc4cdef4db615f4f380'
+sha256sums=('dcdc6c67006ee148e1db943dd6cd20e41a4846798071b5ab08b59c24637d97ef'
             'ede12253ba336c4ff8069999a07aa09fc9ea34d2f0272b76eb74ccf659871969')
 
 package() {
@@ -25,7 +27,7 @@ package() {
   # Symlink main binary
   install -d "${pkgdir}/usr/bin"
   ln -s "/usr/lib/${_pkgname}/${_pkgname}" "${pkgdir}/usr/bin/${_pkgname}"
-  
+
   # Place desktop entry and icons
   desktop-file-install -m 644 --dir "${pkgdir}/usr/share/applications/" "${srcdir}/usr/share/applications/${_pkgname}.desktop"
   install -dm755 "${pkgdir}/usr/share/icons/hicolor/"
@@ -36,7 +38,7 @@ package() {
     install -Dm644 "${pkgdir}/usr/lib/${_pkgname}/${license}" "${pkgdir}/usr/share/licenses/${_pkgname}/${license}"
     rm "${pkgdir}/usr/lib/${_pkgname}/${license}"
   done
-  
+
   ##FIXME: Nasty workaround because we need an old version of libsasl2.so
   ar x libsasl2-2_2.1.27~101-g0780600+dfsg-3ubuntu1_amd64.deb
   tar xfJ data.tar.xz
